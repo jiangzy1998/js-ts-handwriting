@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      .box {
+        width: 1200px;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+      }
+      ul {
+        width: 100%;
+        height: 200px;
+        display: flex;
+      }
+      li {
+        width: 200px;
+        height: 200px;
+        list-style: none;
+        text-align: center;
+        line-height: 200px;
+      }
+
+      #content {
+        width: 100%;
+        background-color: gray;
+        flex: 1;
+        text-align: center;
+        line-height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <ul id="color-list">
+        <li style="background-color: red">red</li>
+        <li style="background-color: orange">orange</li>
+        <li style="background-color: yellow">yellow</li>
+        <li style="background-color: green">green</li>
+        <li style="background-color: blue">blue</li>
+        <li style="background-color: purple">purple</li>
+      </ul>
+      <div id="content">red</div>
+    </div>
+
+    <!-- 我们想要在点击每个 li 标签时，输出li当中的颜色（innerHTML） 。常规做法是遍历每个 li ,然后在每个 li 上绑定一个点击事件： -->
+    <!-- <script>
+      // 这种做法在 li 较少的时候可以使用，但如果有一万个 li ，那就会导致性能降低（少了遍历所有 li 节点的操作，性能上肯定更加优化）。
+      var color_list = document.querySelector(".color_list");
+      var colors = color_list.getElementsByTagName("li");
+      var box = document.querySelector(".box");
+      for (var n = 0; n < colors.length; n++) {
+        colors[n].addEventListener("click", function () {
+          console.log(this.innerHTML);
+          box.innerHTML = "该颜色为 " + this.innerHTML;
+        });
+      }
+    </script> -->
+    <script>
+      // 这时就需要事件代理出场了，利用事件流的特性，我们只绑定一个事件处理函数也可以完成：
+      const color_list = document.getElementById("color-list");
+      const box = document.getElementById("content");
+      window.addEventListener("click", colorChange, false);
+      function colorChange(e) {
+        console.log(e);
+        const event = e || window.event;
+        if (event.target.nodeName.toLowerCase() === "li") {
+          box.innerHTML = event.target.innerHTML;
+        }
+      }
+    </script>
+  </body>
+</html>
